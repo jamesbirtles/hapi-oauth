@@ -1,0 +1,30 @@
+{
+  "name": "hapi-oauth",
+  "version": "0.0.0",
+  "description": "Hapi oauth plugin",
+  "main": "dist/index.js",
+  "typings": "dist/index",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "url": "https://github.com/UnwrittenFun/hapi-oauth",
+    "type": "git"
+  },
+  "author": "James Birtles <jameshbirtles@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "boom": "^4.2.0",
+    "hapi": "^15.1.1",
+    "node-fetch": "^1.6.3",
+    "wreck": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/boom": "0.0.32",
+    "@types/hapi": "^13.0.36",
+    "@types/node-fetch": "^1.6.5",
+    "@types/wreck": "^7.0.28",
+    "typescript": "^2.0.3"
+  }
+}
