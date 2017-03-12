@@ -4,8 +4,13 @@ import * as Boom from 'boom';
 import * as Wreck from 'wreck';
 
 import { PluginOptions } from './plugin';
+import { Profile } from './profile';
 
 export type Scopes = string[] | ((provider: string, req: Hapi.Request) => string[]);
+export interface AccessTokens {
+    access_token: string;
+    refresh_token: string;
+}
 
 export abstract class Provider {
     name: string;
@@ -34,7 +39,7 @@ export abstract class Provider {
     compileAuthUrl(req: Hapi.Request, options: PluginOptions, redirectUri: string) {
         const query = {
             response_type: 'code',
-            redirect_uri: redirectUri, 
+            redirect_uri: redirectUri,
             client_id: this.clientId,
         };
 
@@ -60,12 +65,14 @@ export abstract class Provider {
             }, (err, message, res) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
 
                 if (res.error) {
-                    const error = new Error(res.error_description);
-                    error.name = err.error;
+                    const error = new Error(res.error_description || res.message);
+                    error.name = res.error;
                     reject(error);
+                    return;
                 }
 
                 resolve(res);
@@ -92,7 +99,9 @@ export abstract class Provider {
             )
     }
 
-    abstract getProfile(tokens: any): Promise<any>;
+    /*abstract*/ getProfile(tokens: AccessTokens): Promise<Profile> {
+        throw new Error('Not implemented');
+    };
 }
 
 export function registerProvider(server: Hapi.Server, options: PluginOptions, provider: Provider) {
@@ -104,7 +113,7 @@ export function registerProvider(server: Hapi.Server, options: PluginOptions, pr
         config: options.requestConfig,
         handler: function (request, reply) {
             provider.compileAuthUrl(request, options, redirectUri)
-                .then(url => reply.redirect(url));
+                .then(url => reply({ url }));
         },
     });
 
