@@ -1,3 +1,5 @@
+import * as Wreck from 'wreck';
+import * as qs from 'querystring';
 import fetch from 'node-fetch';
 
 import { Provider, Scopes, AccessTokens } from '../provider';
@@ -53,6 +55,34 @@ export class PicartoProvider extends Provider {
 
     constructor(public clientId: string, public clientSecret: string, public scopes: Scopes) {
         super();
+    }
+
+    requestToken(code: string, redirect_uri: string) {
+        return new Promise((resolve, reject) => {
+            const query = {
+                code, redirect_uri,
+                client_id: this.clientId,
+                client_secret: this.clientSecret,
+                grant_type: 'authorization_code',
+            }
+            Wreck.post(`${this.tokenUrl}?${qs.stringify(query)}`, {
+                json: true
+            }, (err, message, res) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                if (res.error) {
+                    const error = new Error(res.error_description);
+                    error.name = err.error;
+                    reject(error);
+                    return;
+                }
+
+                resolve(res);
+            });
+        })
     }
 
     public getProfile(tokens: AccessTokens): Promise<PicartoProfile> {

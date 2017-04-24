@@ -43,6 +43,7 @@ export class HitboxProvider extends Provider {
             }, (err, message, res) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
 
                 if (res instanceof Buffer) {
@@ -51,6 +52,7 @@ export class HitboxProvider extends Provider {
                         res = JSON.parse(res);
                     } catch (_) {
                         reject(new Error(res));
+                        return;
                     }
                 }
 
@@ -58,6 +60,7 @@ export class HitboxProvider extends Provider {
                     const error = new Error(res.error_description);
                     error.name = err.error;
                     reject(error);
+                    return;
                 }
 
                 resolve(res);
