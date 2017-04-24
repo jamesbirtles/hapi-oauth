@@ -24,12 +24,14 @@ export class PatreonProvider extends Provider {
             }, (err, message, res) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
 
                 if (res.error) {
                     const error = new Error(res.error_description);
                     error.name = err.error;
                     reject(error);
+                    return;
                 }
 
                 resolve(res);
