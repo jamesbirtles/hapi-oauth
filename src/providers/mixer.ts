@@ -41,7 +41,7 @@ export class MixerProvider extends Provider {
         return fetch(this.profileUrl, {
             headers: {
                 Authorization: `Bearer ${tokens.access_token}`,
-            }
+            },
         })
         .then(res => res.json())
         .then(profile => new MixerProfile(profile));

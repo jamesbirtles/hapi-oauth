@@ -15,7 +15,7 @@ export class SmashcastProvider extends Provider {
     constructor(public clientId: string, public clientSecret: string) {
         super();
 
-        this.hash = new Buffer(clientId + clientSecret).toString('base64');
+        this.hash = new Buffer(`${clientId} ${clientSecret}`).toString('base64');
     }
 
     compileAuthUrl(req: Hapi.Request, options: PluginOptions, redirectUri: string) {
