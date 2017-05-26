@@ -27,7 +27,7 @@ export class MixerProfile implements Profile {
     }
 }
 
-export class BeamProvider extends Provider {
+export class MixerProvider extends Provider {
     public name = 'mixer';
     public tokenUrl = 'https://mixer.com/api/v1/oauth/token';
     public authUrl = 'https://mixer.com/oauth/authorize';
