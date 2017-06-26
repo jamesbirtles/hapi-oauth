@@ -2,6 +2,7 @@ import * as Hapi from 'hapi';
 import * as Boom from 'boom';
 import * as Wreck from 'wreck';
 import * as qs from 'querystring';
+
 import { Provider, Scopes } from '../provider';
 import { PluginOptions } from '../plugin';
 
@@ -28,7 +29,7 @@ export class SmashcastProvider extends Provider {
     }
 
     extractCode(req: Hapi.Request) {
-        return req.query.request_token;
+        return req.query['request_token'];
     }
 
     requestToken(code: string, redirect_uri: string) {
@@ -68,10 +69,10 @@ export class SmashcastProvider extends Provider {
         })
     }
 
-    handleCode(request: Hapi.Request, options: PluginOptions, redirectUri: string, reply: Hapi.IReply) {
-        if (request.query.authToken) {
+    handleCode(request: Hapi.Request, options: PluginOptions, redirectUri: string, reply: Hapi.ReplyNoContinue) {
+        if (request.query['authToken']) {
             const data = {
-                access_token: request.query.authToken,
+                access_token: request.query['authToken'],
             }
 
             options.handler.onLink({ provider: this, data }, request, reply);

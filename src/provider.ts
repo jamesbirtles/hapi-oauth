@@ -81,10 +81,10 @@ export abstract class Provider {
     }
 
     extractCode(req: Hapi.Request) {
-        return req.query.code;
+        return req.query['code'];
     }
 
-    handleCode(request: Hapi.Request, options: PluginOptions, redirectUri: string, reply: Hapi.IReply) {
+    handleCode(request: Hapi.Request, options: PluginOptions, redirectUri: string, reply: Hapi.ReplyNoContinue) {
         const code = this.extractCode(request);
 
         if (!code) {

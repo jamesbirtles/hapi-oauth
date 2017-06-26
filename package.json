@@ -1,6 +1,6 @@
 {
   "name": "hapi-oauth",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Hapi oauth plugin",
   "main": "dist/index.js",
   "typings": "dist/index",
@@ -15,14 +15,14 @@
   "author": "James Birtles <jameshbirtles@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "boom": "^4.2.0",
-    "hapi": "^16.1.0",
+    "boom": "^5.1.0",
+    "hapi": "^16.4.3",
     "node-fetch": "^1.6.3",
-    "wreck": "^10.0.0"
+    "wreck": "^12.2.2"
   },
   "devDependencies": {
-    "@types/boom": "0.0.32",
-    "@types/hapi": "^13.0.36",
+    "@types/boom": "^4.3.5",
+    "@types/hapi": "^16.1.5",
     "@types/node-fetch": "^1.6.5",
     "@types/wreck": "^7.0.28",
     "typescript": "^2.0.3"

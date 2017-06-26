@@ -1,7 +1,6 @@
 import * as Hapi from 'hapi';
 
 import { OAuthHandler } from './handler';
-
 import { Provider, registerProvider } from './provider';
 
 export type NextFunc = (err?: any) => void;
@@ -19,8 +18,8 @@ export interface PluginOptions {
     providers: Provider[];
     baseUrl?: string;
     handler?: OAuthHandler;
-    requestConfig?: Hapi.IRouteAdditionalConfigurationOptions;
-    linkConfig?: Hapi.IRouteAdditionalConfigurationOptions;
+    requestConfig?: Hapi.RouteAdditionalConfigurationOptions;
+    linkConfig?: Hapi.RouteAdditionalConfigurationOptions;
 }
 
 export const register = <Plugin> function (server: Hapi.Server, options: PluginOptions, next: NextFunc) {

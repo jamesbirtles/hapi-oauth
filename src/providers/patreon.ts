@@ -1,5 +1,6 @@
 import * as Wreck from 'wreck';
 import * as qs from 'querystring';
+
 import { Provider, Scopes } from '../provider';
 
 export class PatreonProvider extends Provider {
