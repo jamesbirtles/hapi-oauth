@@ -1,5 +1,5 @@
 import * as Boom from 'boom';
-import { Request, IReply } from 'hapi';
+import { Request, ReplyNoContinue } from 'hapi';
 
 import { Provider } from './provider';
 
@@ -14,11 +14,11 @@ export interface LinkError {
 }
 
 export class OAuthHandler {
-    public onLink(res: LinkSuccess, request: Request, reply: IReply): void {
+    public onLink(res: LinkSuccess, request: Request, reply: ReplyNoContinue): void {
         reply(res.data);
     }
 
-    public onError(res: LinkError, request: Request, reply: IReply): void {
+    public onError(res: LinkError, request: Request, reply: ReplyNoContinue): void {
         reply(Boom.badImplementation(res.error));
     }
 

@@ -22,9 +22,9 @@ server.register({
             auth: { mode: 'optional', strategy: 'jwt' }
         },
         providers: [
-            new HapiOAuth.BeamProvider(
-                'beamClientId',
-                'beamClientSecret',
+            new HapiOAuth.MixerProvider(
+                'mixerClientId',
+                'mixerClientSecret',
                 ['user:details:self' /* add more scopes here */]
             ),
             // Rinse and repeat for other providers.
