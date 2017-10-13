@@ -64,13 +64,10 @@ export class DiscordProvider extends Provider {
                 Authorization: `Bearer ${tokens.access_token}`,
                 'Accept-Encoding': 'gzip,deflate',
                 'User-Agent': `${name} (https://github.com/UnwrittenFun/hapi-oauth, ${version})`,
-            }
+            },
+            compress: true
         })
         .then(res => res.json())
-        .then(profile => {
-            const test = new DiscordProfile(profile);
-            console.log(test);
-            return test;
-        });
+        .then(profile => new DiscordProfile(profile));
     }
 }
