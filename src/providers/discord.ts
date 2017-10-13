@@ -1,7 +1,6 @@
 const { name, version } = require('../../../package.json');
 
 import fetch from 'node-fetch';
-import * as Wreck from 'wreck';
 import { stringify } from 'querystring';
 
 import { Provider, Scopes, AccessTokens } from '../provider';
