@@ -33,7 +33,6 @@ export class DiscordProvider extends Provider {
 
     constructor(public clientId: string, public clientSecret: string, public scopes: Scopes = []) {
         super();
-        console.log(version);
     }
 
     public requestToken(code: string, redirect_uri: string) {
@@ -56,9 +55,6 @@ export class DiscordProvider extends Provider {
     }
 
     public getProfile(tokens: AccessTokens): Promise<DiscordProfile> {
-        console.log({
-            Authorization: tokens.access_token,
-        });
         return fetch(this.profileUrl, {
             headers: {
                 Authorization: `Bearer ${tokens.access_token}`,
