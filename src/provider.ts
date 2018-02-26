@@ -1,7 +1,7 @@
 import * as Hapi from 'hapi';
 import * as qs from 'querystring';
 import * as Boom from 'boom';
-import * as Wreck from 'wreck';
+import fetch from 'node-fetch';
 
 import { PluginOptions } from './plugin';
 import { Profile } from './profile';
@@ -60,37 +60,24 @@ export abstract class Provider {
     }
 
     requestToken(code: string, redirect_uri: string) {
-        return new Promise((resolve, reject) => {
-            Wreck.post(
-                this.tokenUrl,
-                {
-                    json: true,
-                    payload: {
-                        code,
-                        redirect_uri,
-                        client_id: this.clientId,
-                        client_secret: this.clientSecret,
-                        grant_type: 'authorization_code',
-                    },
-                },
-                (err, message, res) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
+        return fetch(this.tokenUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                code,
+                redirect_uri,
+                client_id: this.clientId,
+                client_secret: this.clientSecret,
+                grant_type: 'authorization_code',
+            }),
+        }).then(res => {
+            if (res.status < 200 || res.status >= 300) {
+                throw new Error(`unexpected response code ${res.status}`);
+            }
 
-                    if (res.error) {
-                        const error = new Error(
-                            res.error_description || res.message,
-                        );
-                        error.name = res.error;
-                        reject(error);
-                        return;
-                    }
-
-                    resolve(res);
-                },
-            );
+            return res.json();
         });
     }
 
