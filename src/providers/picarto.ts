@@ -1,9 +1,9 @@
-import * as Wreck from "wreck";
-import * as qs from "querystring";
-import fetch from "node-fetch";
+import * as Wreck from 'wreck';
+import * as qs from 'querystring';
+import fetch from 'node-fetch';
 
-import { Provider, Scopes, AccessTokens } from "../provider";
-import { Profile } from "../profile";
+import { Provider, Scopes, AccessTokens } from '../provider';
+import { Profile } from '../profile';
 
 export class PicartoProfile implements Profile {
     public channel_details: {
@@ -48,10 +48,10 @@ export class PicartoProfile implements Profile {
 }
 
 export class PicartoProvider extends Provider {
-    public name = "picarto";
-    public tokenUrl = "https://oauth.picarto.tv/token";
-    public authUrl = "https://oauth.picarto.tv/authorize";
-    public profileUrl = "https://api.picarto.tv/v1/user";
+    public name = 'picarto';
+    public tokenUrl = 'https://oauth.picarto.tv/token';
+    public authUrl = 'https://oauth.picarto.tv/authorize';
+    public profileUrl = 'https://api.picarto.tv/v1/user';
 
     constructor(
         public clientId: string,
@@ -68,7 +68,7 @@ export class PicartoProvider extends Provider {
                 redirect_uri,
                 client_id: this.clientId,
                 client_secret: this.clientSecret,
-                grant_type: "authorization_code",
+                grant_type: 'authorization_code',
             };
             Wreck.post(
                 `${this.tokenUrl}?${qs.stringify(query)}`,

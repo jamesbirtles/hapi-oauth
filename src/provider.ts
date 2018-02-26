@@ -1,10 +1,10 @@
-import * as Hapi from "hapi";
-import * as qs from "querystring";
-import * as Boom from "boom";
-import * as Wreck from "wreck";
+import * as Hapi from 'hapi';
+import * as qs from 'querystring';
+import * as Boom from 'boom';
+import * as Wreck from 'wreck';
 
-import { PluginOptions } from "./plugin";
-import { Profile } from "./profile";
+import { PluginOptions } from './plugin';
+import { Profile } from './profile';
 
 export type Scopes =
     | string[]
@@ -27,11 +27,11 @@ export abstract class Provider {
             return undefined;
         }
 
-        return this.getScopes(req).join(" ");
+        return this.getScopes(req).join(' ');
     }
 
     getScopes(req: Hapi.Request): string[] {
-        if (typeof this.scopes === "function") {
+        if (typeof this.scopes === 'function') {
             return this.scopes(this.name, req);
         }
 
@@ -44,14 +44,14 @@ export abstract class Provider {
         redirectUri: string,
     ) {
         const query = {
-            response_type: "code",
+            response_type: 'code',
             redirect_uri: redirectUri,
             client_id: this.clientId,
         };
 
         const scopes = this.serialiseScopes(req);
         if (scopes) {
-            query["scope"] = scopes;
+            query['scope'] = scopes;
         }
 
         return options.handler
@@ -70,7 +70,7 @@ export abstract class Provider {
                         redirect_uri,
                         client_id: this.clientId,
                         client_secret: this.clientSecret,
-                        grant_type: "authorization_code",
+                        grant_type: 'authorization_code',
                     },
                 },
                 (err, message, res) => {
@@ -95,7 +95,7 @@ export abstract class Provider {
     }
 
     extractCode(req: Hapi.Request) {
-        return req.query["code"];
+        return req.query['code'];
     }
 
     async handleCode(
@@ -106,7 +106,7 @@ export abstract class Provider {
         const code = this.extractCode(request);
 
         if (!code) {
-            throw Boom.unauthorized("Missing code");
+            throw Boom.unauthorized('Missing code');
         }
 
         return this.requestToken(code, redirectUri).then(
@@ -117,7 +117,7 @@ export abstract class Provider {
     }
 
     /*abstract*/ getProfile(tokens: AccessTokens): Promise<Profile> {
-        throw new Error("Not implemented");
+        throw new Error('Not implemented');
     }
 }
 
@@ -129,7 +129,7 @@ export function registerProvider(
     const redirectUri = `${options.baseUrl}/oauth/${provider.name}`;
 
     server.route({
-        method: "GET",
+        method: 'GET',
         path: `/oauth/${provider.name}/request`,
         options: options.requestConfig,
         handler: function(request, reply) {
@@ -140,7 +140,7 @@ export function registerProvider(
     });
 
     server.route({
-        method: "GET",
+        method: 'GET',
         path: `/oauth/${provider.name}`,
         options: options.linkConfig,
         handler: function(request, reply) {

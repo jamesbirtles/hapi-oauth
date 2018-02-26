@@ -1,7 +1,7 @@
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
-import { Provider, Scopes, AccessTokens } from "../provider";
-import { Profile } from "../profile";
+import { Provider, Scopes, AccessTokens } from '../provider';
+import { Profile } from '../profile';
 
 export class MixerProfile implements Profile {
     public id: number;
@@ -28,10 +28,10 @@ export class MixerProfile implements Profile {
 }
 
 export class MixerProvider extends Provider {
-    public name = "mixer";
-    public tokenUrl = "https://mixer.com/api/v1/oauth/token";
-    public authUrl = "https://mixer.com/oauth/authorize";
-    public profileUrl = "https://mixer.com/api/v1/users/current";
+    public name = 'mixer';
+    public tokenUrl = 'https://mixer.com/api/v1/oauth/token';
+    public authUrl = 'https://mixer.com/oauth/authorize';
+    public profileUrl = 'https://mixer.com/api/v1/users/current';
 
     constructor(
         public clientId: string,

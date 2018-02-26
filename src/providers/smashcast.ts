@@ -1,15 +1,15 @@
-import * as Hapi from "hapi";
-import * as Boom from "boom";
-import * as Wreck from "wreck";
-import * as qs from "querystring";
+import * as Hapi from 'hapi';
+import * as Boom from 'boom';
+import * as Wreck from 'wreck';
+import * as qs from 'querystring';
 
-import { Provider, Scopes } from "../provider";
-import { PluginOptions } from "../plugin";
+import { Provider, Scopes } from '../provider';
+import { PluginOptions } from '../plugin';
 
 export class SmashcastProvider extends Provider {
-    public name = "smashcast";
-    public tokenUrl = "https://api.smashcast.tv/oauth/exchange";
-    public authUrl = "https://api.smashcast.tv/oauth/login";
+    public name = 'smashcast';
+    public tokenUrl = 'https://api.smashcast.tv/oauth/exchange';
+    public authUrl = 'https://api.smashcast.tv/oauth/login';
 
     private hash: string;
 
@@ -17,7 +17,7 @@ export class SmashcastProvider extends Provider {
         super();
 
         this.hash = new Buffer(`${clientId} ${clientSecret}`).toString(
-            "base64",
+            'base64',
         );
     }
 
@@ -36,7 +36,7 @@ export class SmashcastProvider extends Provider {
     }
 
     extractCode(req: Hapi.Request) {
-        return req.query["request_token"];
+        return req.query['request_token'];
     }
 
     requestToken(code: string, redirect_uri: string) {
@@ -58,7 +58,7 @@ export class SmashcastProvider extends Provider {
                     }
 
                     if (res instanceof Buffer) {
-                        res = res.toString("utf8");
+                        res = res.toString('utf8');
                         try {
                             res = JSON.parse(res);
                         } catch {
@@ -85,9 +85,9 @@ export class SmashcastProvider extends Provider {
         options: PluginOptions,
         redirectUri: string,
     ) {
-        if (request.query["authToken"]) {
+        if (request.query['authToken']) {
             const data = {
-                access_token: request.query["authToken"],
+                access_token: request.query['authToken'],
             };
 
             return options.handler.onLink({ provider: this, data }, request);

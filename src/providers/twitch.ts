@@ -1,6 +1,6 @@
-import { Provider, Scopes, AccessTokens } from "../provider";
-import { Profile } from "../profile";
-import fetch from "node-fetch";
+import { Provider, Scopes, AccessTokens } from '../provider';
+import { Profile } from '../profile';
+import fetch from 'node-fetch';
 
 export class TwitchProfile implements Profile {
     public _id: string;
@@ -25,10 +25,10 @@ export class TwitchProfile implements Profile {
 }
 
 export class TwitchProvider extends Provider {
-    public name = "twitch";
-    public tokenUrl = "https://api.twitch.tv/kraken/oauth2/token";
-    public authUrl = "https://api.twitch.tv/kraken/oauth2/authorize";
-    public profileUrl = "https://api.twitch.tv/kraken/user";
+    public name = 'twitch';
+    public tokenUrl = 'https://api.twitch.tv/kraken/oauth2/token';
+    public authUrl = 'https://api.twitch.tv/kraken/oauth2/authorize';
+    public profileUrl = 'https://api.twitch.tv/kraken/user';
 
     constructor(
         public clientId: string,
@@ -41,8 +41,8 @@ export class TwitchProvider extends Provider {
     public getProfile(tokens: AccessTokens): Promise<TwitchProfile> {
         return fetch(this.profileUrl, {
             headers: {
-                Accept: "application/vnd.twitchtv.v5+json",
-                "Client-ID": this.clientId,
+                Accept: 'application/vnd.twitchtv.v5+json',
+                'Client-ID': this.clientId,
                 Authorization: `OAuth ${tokens.access_token}`,
             },
         })

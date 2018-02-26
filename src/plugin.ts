@@ -1,9 +1,8 @@
-import * as Hapi from "hapi";
+import * as Hapi from 'hapi';
 
-import { OAuthHandler } from "./handler";
-import { Provider, registerProvider } from "./provider";
-
-const pkg = require('../package.json');
+import { OAuthHandler } from './handler';
+import { Provider, registerProvider } from './provider';
+import { name, version } from './info';
 
 export interface PluginOptions {
     // onLink: (err: any, payload: any, request: Hapi.Request, reply: Hapi.IReply) => void;
@@ -15,11 +14,11 @@ export interface PluginOptions {
 }
 
 export const plugin: Hapi.Plugin<PluginOptions> = {
-    name: pkg.name,
-    version: pkg.version,
+    name,
+    version,
     async register(server, options) {
         if (!options.providers) {
-            throw new Error("Providers array not supplied");
+            throw new Error('Providers array not supplied');
         }
 
         options.baseUrl = options.baseUrl || server.info.uri;

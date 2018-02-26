@@ -1,12 +1,12 @@
-import * as Wreck from "wreck";
-import * as qs from "querystring";
+import * as Wreck from 'wreck';
+import * as qs from 'querystring';
 
-import { Provider, Scopes } from "../provider";
+import { Provider, Scopes } from '../provider';
 
 export class PatreonProvider extends Provider {
-    public name = "patreon";
-    public tokenUrl = "https://api.patreon.com/oauth2/token";
-    public authUrl = "https://www.patreon.com/oauth2/authorize";
+    public name = 'patreon';
+    public tokenUrl = 'https://api.patreon.com/oauth2/token';
+    public authUrl = 'https://www.patreon.com/oauth2/authorize';
 
     constructor(
         public clientId: string,
@@ -23,7 +23,7 @@ export class PatreonProvider extends Provider {
                 redirect_uri,
                 client_id: this.clientId,
                 client_secret: this.clientSecret,
-                grant_type: "authorization_code",
+                grant_type: 'authorization_code',
             };
             Wreck.post(
                 `${this.tokenUrl}?${qs.stringify(query)}`,
