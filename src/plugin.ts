@@ -3,6 +3,8 @@ import * as Hapi from "hapi";
 import { OAuthHandler } from "./handler";
 import { Provider, registerProvider } from "./provider";
 
+const pkg = require('../package.json');
+
 export interface PluginOptions {
     // onLink: (err: any, payload: any, request: Hapi.Request, reply: Hapi.IReply) => void;
     providers: Provider[];
@@ -13,8 +15,8 @@ export interface PluginOptions {
 }
 
 export const plugin: Hapi.Plugin<PluginOptions> = {
-    name: "hapi-oauth",
-    version: "1.0.0",
+    name: pkg.name,
+    version: pkg.version,
     async register(server, options) {
         if (!options.providers) {
             throw new Error("Providers array not supplied");
