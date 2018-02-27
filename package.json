@@ -1,6 +1,6 @@
 {
   "name": "hapi-oauth",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Hapi oauth plugin",
   "main": "dist/index.js",
   "typings": "dist/index",
