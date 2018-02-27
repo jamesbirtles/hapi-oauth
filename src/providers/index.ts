@@ -1,4 +1,5 @@
 export * from './discord';
+export * from './google';
 export * from './mixer';
 export * from './patreon';
 export * from './picarto';
