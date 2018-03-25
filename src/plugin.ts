@@ -5,7 +5,6 @@ import { Provider, registerProvider } from './provider';
 import { name, version } from './info';
 
 export interface PluginOptions {
-    // onLink: (err: any, payload: any, request: Hapi.Request, reply: Hapi.IReply) => void;
     providers: Provider[];
     baseUrl?: string;
     handler?: OAuthHandler;

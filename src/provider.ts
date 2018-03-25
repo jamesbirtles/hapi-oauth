@@ -62,7 +62,7 @@ export abstract class Provider {
             .then(() => `${this.authUrl}?${qs.stringify(query)}`);
     }
 
-    async requestToken(code: string, redirect_uri: string) {
+    requestToken(code: string, redirect_uri: string) {
         const payload = {
             code,
             redirect_uri,
@@ -71,6 +71,23 @@ export abstract class Provider {
             grant_type: 'authorization_code',
         };
 
+        return this.sendTokenRequest(payload);
+    }
+
+    refreshToken(
+        refresh_token: string,
+    ): Promise<{ access_token: string; refresh_token?: string }> {
+        const payload = {
+            refresh_token,
+            client_id: this.clientId,
+            client_secret: this.clientSecret,
+            grant_type: 'refresh_token',
+        };
+
+        return this.sendTokenRequest(payload);
+    }
+
+    async sendTokenRequest(payload: object) {
         let body: string;
         switch (this.encoding) {
             case 'application/json':
@@ -98,26 +115,25 @@ export abstract class Provider {
         });
     }
 
-    extractCode(req: Hapi.Request) {
-        return req.query['code'];
-    }
-
     async handleCode(
-        request: Hapi.Request,
+        h: Hapi.ResponseToolkit,
         options: PluginOptions,
         redirectUri: string,
     ) {
-        const code = this.extractCode(request);
+        const code = this.extractCode(h.request as Hapi.Request);
 
         if (!code) {
             throw Boom.unauthorized('Missing code');
         }
 
         return this.requestToken(code, redirectUri).then(
-            data => options.handler.onLink({ provider: this, data }, request),
-            error =>
-                options.handler.onError({ provider: this, error }, request),
+            data => options.handler.onLink({ provider: this, data }, h),
+            error => options.handler.onError({ provider: this, error }, h),
         );
+    }
+
+    extractCode(req: Hapi.Request) {
+        return req.query['code'];
     }
 
     /*abstract*/ getProfile(tokens: AccessTokens): Promise<Profile> {
@@ -136,7 +152,7 @@ export function registerProvider(
         method: 'GET',
         path: `/oauth/${provider.name}/request`,
         options: options.requestConfig,
-        handler: function(request, reply) {
+        handler: function(request) {
             return provider
                 .compileAuthUrl(request, options, redirectUri)
                 .then(url => ({ url }));
@@ -147,8 +163,8 @@ export function registerProvider(
         method: 'GET',
         path: `/oauth/${provider.name}`,
         options: options.linkConfig,
-        handler: function(request, reply) {
-            return provider.handleCode(request, options, redirectUri);
+        handler: function(request, h) {
+            return provider.handleCode(h, options, redirectUri);
         },
     });
 }

@@ -1,5 +1,5 @@
 import * as Boom from 'boom';
-import { Request } from 'hapi';
+import { Request, ResponseToolkit } from 'hapi';
 
 import { Provider } from './provider';
 
@@ -14,11 +14,11 @@ export interface LinkError {
 }
 
 export class OAuthHandler {
-    public async onLink(res: LinkSuccess, request: Request): Promise<any> {
+    public async onLink(res: LinkSuccess, h: ResponseToolkit): Promise<any> {
         return res.data;
     }
 
-    public async onError(res: LinkError, request: Request): Promise<any> {
+    public async onError(res: LinkError, h: ResponseToolkit): Promise<any> {
         throw Boom.badImplementation(res.error);
     }
 

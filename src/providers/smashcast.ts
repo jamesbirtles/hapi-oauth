@@ -81,18 +81,18 @@ export class SmashcastProvider extends Provider {
     }
 
     handleCode(
-        request: Hapi.Request,
+        h: Hapi.ResponseToolkit,
         options: PluginOptions,
         redirectUri: string,
     ) {
-        if (request.query['authToken']) {
+        if (h.request.query['authToken']) {
             const data = {
-                access_token: request.query['authToken'],
+                access_token: h.request.query['authToken'],
             };
 
-            return options.handler.onLink({ provider: this, data }, request);
+            return options.handler.onLink({ provider: this, data }, h);
         }
 
-        return super.handleCode(request, options, redirectUri);
+        return super.handleCode(h, options, redirectUri);
     }
 }
