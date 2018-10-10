@@ -120,10 +120,20 @@ export abstract class Provider {
         options: PluginOptions,
         redirectUri: string,
     ) {
-        const code = this.extractCode(h.request as Hapi.Request);
+        const error = this.getCodeError(h.request as Hapi.Request);
+        if (error) {
+            return options.handler.onError({ provider: this, error }, h);
+        }
 
+        const code = this.extractCode(h.request as Hapi.Request);
         if (!code) {
-            throw Boom.unauthorized('Missing code');
+            return options.handler.onError(
+                {
+                    provider: this,
+                    error: new CodeError(CodeError.Kind.Missing),
+                },
+                h,
+            );
         }
 
         return this.requestToken(code, redirectUri).then(
@@ -134,6 +144,20 @@ export abstract class Provider {
 
     extractCode(req: Hapi.Request) {
         return req.query['code'];
+    }
+
+    getCodeError(req: Hapi.Request): CodeError | null {
+        const err = req.query['error'];
+        if (err === null) {
+            return null;
+        }
+
+        switch (err) {
+            case 'access_denied':
+                return new CodeError(CodeError.Kind.Denied);
+            default:
+                return new CodeError(CodeError.Kind.Unknown);
+        }
     }
 
     /*abstract*/ getProfile(tokens: AccessTokens): Promise<Profile> {
@@ -167,4 +191,19 @@ export function registerProvider(
             return provider.handleCode(h, options, redirectUri);
         },
     });
+}
+
+export class CodeError extends Error {
+    constructor(public kind: CodeError.Kind) {
+        super(kind);
+        Object.setPrototypeOf(this, new.target.prototype);
+    }
+}
+
+export namespace CodeError {
+    export enum Kind {
+        Denied = 'Request denied by user',
+        Missing = 'Code not found in request',
+        Unknown = 'Unknown error returned from provider',
+    }
 }

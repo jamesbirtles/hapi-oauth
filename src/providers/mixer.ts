@@ -44,6 +44,7 @@ export class MixerProvider extends Provider {
     public getProfile(tokens: AccessTokens): Promise<MixerProfile> {
         return fetch(this.profileUrl, {
             headers: {
+                'Client-ID': this.clientId,
                 Authorization: `Bearer ${tokens.access_token}`,
             },
         })
