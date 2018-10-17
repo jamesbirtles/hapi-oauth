@@ -148,7 +148,7 @@ export abstract class Provider {
 
     getCodeError(req: Hapi.Request): CodeError | null {
         const err = req.query['error'];
-        if (err === null || err === undefined) {
+        if (err == null) {
             return null;
         }
 
