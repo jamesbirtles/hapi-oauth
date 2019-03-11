@@ -103,9 +103,10 @@ export class TwitterProvider extends Provider {
                 return;
             }
             this.oauth.getOAuthAccessToken(code, data.secret, req.query['oauth_verifier'], (err, token, secret) => {
+                delete this.store[token];
+
                 if (err) {
                     reject(Boom.badRequest('Failed to get an access token'));
-                    delete this.store[code];
 
                     return;
                 }
