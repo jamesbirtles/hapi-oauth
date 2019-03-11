@@ -1,7 +1,6 @@
 import * as Hapi from 'hapi';
-import * as qs from 'querystring';
-import * as Boom from 'boom';
 import fetch from 'node-fetch';
+import * as qs from 'querystring';
 
 import { PluginOptions } from './plugin';
 import { Profile } from './profile';
@@ -62,7 +61,7 @@ export abstract class Provider {
             .then(() => `${this.authUrl}?${qs.stringify(query)}`);
     }
 
-    requestToken(code: string, redirect_uri: string) {
+    requestToken(code: string, redirect_uri: string, query: Hapi.Request) {
         const payload = {
             code,
             redirect_uri,
@@ -136,7 +135,7 @@ export abstract class Provider {
             );
         }
 
-        return this.requestToken(code, redirectUri).then(
+        return this.requestToken(code, redirectUri, h.request as Hapi.Request).then(
             data => options.handler.onLink({ provider: this, data }, h),
             error => options.handler.onError({ provider: this, error }, h),
         );
