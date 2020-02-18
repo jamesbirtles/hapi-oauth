@@ -71,7 +71,6 @@ export class MicrosoftProvider extends Provider {
 		})
 			.then(res => res.json())
 			.then(profile => {
-				profile.avatar = this.avatarUrl;
 				return new MicrosoftProfile(profile);
 			});
 	}
