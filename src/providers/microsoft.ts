@@ -29,8 +29,7 @@ export class MicrosoftProvider extends Provider {
 	private tenant = "common";
 	public tokenUrl = `https://login.microsoftonline.com/${this.tenant}/oauth2/v2.0/token`;
 	public authUrl = `https://login.microsoftonline.com/${this.tenant}/oauth2/v2.0/authorize`;
-	public profileUrl = "https://graph.microsoft.com/v1.0/me/";
-	public avatarUrl = "https://graph.microsoft.com/v1.0/me/photo/$value";
+	public profileUrl = "https://graph.microsoft.com/v1.0/me";
 
 	constructor(
 		public clientId: string,
