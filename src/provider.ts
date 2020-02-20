@@ -1,8 +1,6 @@
-import * as Boom from 'boom';
 import * as Hapi from 'hapi';
 import fetch from 'node-fetch';
 import * as qs from 'querystring';
-
 import { PluginOptions } from './plugin';
 import { Profile } from './profile';
 
@@ -94,7 +92,7 @@ export abstract class Provider {
                 body = JSON.stringify(payload);
                 break;
             case 'application/x-www-form-urlencoded':
-                body = qs.stringify(payload as qs.ParsedUrlQueryInput);
+                body = qs.stringify(payload);
                 break;
             default:
                 throw new Error(`Unknown encoding type: ${this.encoding}`);
